@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b5268">
+<title>Meu Finanças</title>
+<style>
+:root{--navy:#0b5268;--green:#16a56b;--bg:#f4f7f8;--text:#102a33;--muted:#71858d;--card:#fff;--line:#e3ecef}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
+.app{max-width:430px;margin:auto;min-height:100vh;background:#f8fafb;padding-bottom:82px}
+header{background:var(--navy);color:white;padding:20px 18px 22px;border-radius:0 0 24px 24px}
+.top{display:flex;justify-content:space-between;align-items:center}.greet{display:flex;gap:10px;align-items:center}.avatar{width:43px;height:43px;border-radius:50%;background:white;color:var(--navy);display:grid;place-items:center;font-size:21px}.greet b{font-size:18px}.greet small{display:block;opacity:.9;margin-top:3px}.bell{font-size:21px}
+main{padding:17px}.screen{display:none}.screen.active{display:block}
+.balance{margin-top:16px;background:white;color:var(--text);border-radius:16px;padding:15px;box-shadow:0 5px 18px #0001}.balance small{color:#188a60;font-weight:bold}.balance strong{display:block;font-size:28px;margin-top:5px}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}.action{border:0;background:white;border-radius:13px;padding:9px 3px;color:var(--text);font-size:10px}.action i{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;color:#fff;font-style:normal;font-size:19px;margin:auto auto 5px}.r{background:#ef5350}.g{background:#16a56b}.b{background:#347dcc}.p{background:#8b5bd7}
+.title{display:flex;align-items:center;justify-content:space-between;margin:17px 0 10px}.title h2{font-size:17px;margin:0}.link{border:0;background:none;color:#1670a1;font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.card{background:white;border-radius:15px;padding:14px;box-shadow:0 3px 12px #0000000b}.card small{font-weight:bold}.income{color:#16875a}.expense{color:#e74646}.card strong{display:block;font-size:18px;margin-top:6px}
+.donutwrap{display:flex;align-items:center;justify-content:center;min-height:175px}.donut{width:135px;height:135px;border-radius:50%;background:conic-gradient(#149c85 0 33%,#8b5bd7 33% 55%,#ef735c 55% 70%,#347dcc 70% 82%,#b6c7d0 82%);position:relative}.donut:after{content:"67%";position:absolute;inset:29px;background:#fff;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:bold}.legend{font-size:11px;line-height:2;margin-left:15px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.tx{display:flex;align-items:center;gap:10px;background:#fff;border-radius:13px;padding:11px;margin-bottom:7px}.tx .ico{width:38px;height:38px;border-radius:11px;background:#edf7f3;display:grid;place-items:center}.tx .info{flex:1}.tx b{font-size:13px}.tx small{display:block;color:var(--muted);margin-top:3px}.tx .amt{font-size:12px;font-weight:bold}
+.toolbar{display:flex;gap:8px;margin:10px 0}.toolbar select,.toolbar input,.form input,.form select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white}.toolbar>*{flex:1}
+.goal{background:white;border-radius:15px;padding:15px;margin-bottom:10px}.goalhead{display:flex;justify-content:space-between}.bar{height:8px;background:#e8eef0;border-radius:9px;margin:10px 0 5px;overflow:hidden}.bar span{display:block;height:100%;background:var(--green)}.goal small{color:var(--muted)}
+.reportbar{height:170px;background:white;border-radius:15px;padding:15px;display:flex;align-items:end;gap:8px}.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px}.bars{height:120px;display:flex;align-items:end;gap:4px}.barin,.barout{width:12px;border-radius:4px 4px 0 0}.barin{background:#16a56b}.barout{background:#ef5350}
+.profile{background:white;border-radius:16px;padding:18px;text-align:center}.profile .bigavatar{width:72px;height:72px;border-radius:50%;background:#e7eff1;margin:auto;display:grid;place-items:center;font-size:35px}.menuitem{background:white;border-bottom:1px solid var(--line);padding:16px 4px;display:flex;justify-content:space-between}.menuitem:first-of-type{margin-top:12px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);height:70px;background:white;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 8px;z-index:5}.nav{border:0;background:none;color:#71858d;font-size:10px}.nav span{display:block;font-size:20px;margin-bottom:3px}.nav.active{color:#0b8062;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:20;align-items:end;justify-content:center}.modal.show{display:flex}.sheet{width:min(430px,100%);background:white;border-radius:22px 22px 0 0;padding:19px}.close{float:right;border:0;background:none;font-size:24px}.sheet h2{margin:0 0 15px}.form{margin:10px 0}.form label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px}.save{width:100%;border:0;background:var(--green);color:white;padding:13px;border-radius:11px;font-weight:bold;font-size:15px;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#102a33;color:white;padding:11px 15px;border-radius:10px;font-size:12px;display:none;z-index:30}
+</style>
+<link rel="manifest" href="manifest.webmanifest"></head>
+<body>
+<div class="app">
+<header>
+ <div class="top"><div class="greet"><div class="avatar">👤</div><div><b>Olá!</b><small>Vamos cuidar do seu planejamento financeiro hoje?</small></div></div><div class="bell">🔔</div></div>
+ <div class="balance"><small>Saldo disponível</small><strong id="balance">R$ 0,00</strong></div>
+ <div class="actions">
+  <button class="action" onclick="openEntry('saida')"><i class="r">+</i>Adicionar despesa</button>
+  <button class="action" onclick="openEntry('entrada')"><i class="g">$</i>Adicionar receita</button>
+  <button class="action" onclick="go('metas')"><i class="b">🎯</i>Metas</button>
+  <button class="action" onclick="go('relatorios')"><i class="p">▣</i>Relatórios</button>
+ </div>
+</header>
+<main>
+<section id="inicio" class="screen active">
+ <div class="title"><h2>Resumo do mês</h2><button class="link" onclick="go('despesas')">Ver detalhes ›</button></div>
+ <div class="grid2"><div class="card"><small class="income">↑ Entradas</small><strong id="income">R$ 0,00</strong></div><div class="card"><small class="expense">↓ Saídas</small><strong id="expense">R$ 0,00</strong></div></div>
+ <div class="title"><h2>Distribuição das despesas</h2></div>
+ <div class="card donutwrap"><div class="donut"></div><div class="legend">● Moradia<br>● Alimentação<br>● Transporte<br>● Estudos<br>● Outros</div></div>
+ <div class="title"><h2>Últimos lançamentos</h2><button class="link" onclick="go('despesas')">Ver todos</button></div>
+ <div id="homeList"></div>
+</section>
+
+<section id="despesas" class="screen">
+ <div class="title"><h2>Despesas</h2><button class="link" onclick="openEntry('saida')">＋ Adicionar</button></div>
+ <div class="toolbar"><select id="filterType" onchange="render()"><option value="all">Todos</option><option value="entrada">Entradas</option><option value="saida">Saídas</option></select><select id="filterCat" onchange="render()"><option value="all">Categorias</option><option>Alimentação</option><option>Transporte</option><option>Estudos</option><option>Moradia</option><option>Lazer</option><option>Outros</option></select></div>
+ <div id="allList"></div>
+</section>
+
+<section id="metas" class="screen">
+ <div class="title"><h2>Minhas Metas</h2><button class="link" onclick="openGoal()">＋ Nova meta</button></div>
+ <div id="goals"></div>
+</section>
+
+<section id="relatorios" class="screen">
+ <div class="title"><h2>Relatórios</h2></div>
+ <div class="toolbar"><select><option>Mensal</option><option>Trimestral</option><option>Anual</option></select></div>
+ <div class="reportbar" id="report"></div>
+ <div class="grid2" style="margin-top:12px"><div class="card"><small class="income">↑ Total de entradas</small><strong id="rIncome">R$ 0,00</strong></div><div class="card"><small class="expense">↓ Total de saídas</small><strong id="rExpense">R$ 0,00</strong></div></div>
+</section>
+
+<section id="perfil" class="screen">
+ <div class="title"><h2>Perfil</h2></div>
+ <div class="profile"><div class="bigavatar">👤</div><h3>Meu Finanças</h3><small>Controle financeiro</small></div>
+ <div class="menuitem">👤 Meu cadastro <span>›</span></div><div class="menuitem">⚙️ Configurações <span>›</span></div><div class="menuitem">🔔 Notificações <span>›</span></div><div class="menuitem">❓ Ajuda <span>›</span></div>
+</section>
+</main>
+
+<nav class="bottom">
+ <button class="nav active" data-screen="inicio" onclick="go('inicio')"><span>⌂</span>Início</button>
+ <button class="nav" data-screen="despesas" onclick="go('despesas')"><span>▣</span>Despesas</button>
+ <button class="nav" data-screen="metas" onclick="go('metas')"><span>◎</span>Metas</button>
+ <button class="nav" data-screen="perfil" onclick="go('perfil')"><span>●</span>Perfil</button>
+</nav>
+</div>
+
+<div class="modal" id="modal"><div class="sheet"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Adicionar despesa</h2>
+ <div class="form"><label>Categoria</label><select id="category"><option>Alimentação</option><option>Transporte</option><option>Estudos</option><option>Moradia</option><option>Lazer</option><option>Outros</option></select></div>
+ <div class="form"><label>Valor</label><input id="amount" type="number" min="0" step=".01" placeholder="0,00"></div>
+ <div class="form"><label>Data</label><input id="date" type="date"></div>
+ <div class="form"><label>Descrição (opcional)</label><input id="desc" placeholder="Ex.: Almoço no restaurante"></div>
+ <button class="save" onclick="saveEntry()">Salvar</button>
+</div></div>
+
+<div class="modal" id="goalModal"><div class="sheet"><button class="close" onclick="closeGoal()">×</button><h2>Nova meta</h2>
+ <div class="form"><label>Nome da meta</label><input id="goalName" placeholder="Ex.: Reserva"></div>
+ <div class="form"><label>Valor desejado</label><input id="goalTarget" type="number" min="0" step=".01" placeholder="0,00"></div>
+ <div class="form"><label>Valor já guardado</label><input id="goalSaved" type="number" min="0" step=".01" placeholder="0,00"></div>
+ <button class="save" onclick="saveGoal()">Salvar meta</button>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+let entries=JSON.parse(localStorage.getItem('mf_entries')||'[]'), goals=JSON.parse(localStorage.getItem('mf_goals')||'[]'), entryType='saida';
+const money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.screen===id));render();window.scrollTo(0,0)}
+function openEntry(t){entryType=t;document.getElementById('modalTitle').textContent=t==='saida'?'Adicionar despesa':'Adicionar receita';document.getElementById('date').value=new Date().toISOString().slice(0,10);document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function saveEntry(){let v=+document.getElementById('amount').value;if(!v||v<0){toast('Informe um valor válido.');return}entries.unshift({id:Date.now(),type:entryType,category:category.value,amount:v,date:date.value,desc:desc.value});localStorage.setItem('mf_entries',JSON.stringify(entries));closeModal();render();toast('Lançamento salvo.')}
+function txHTML(x){return `<div class="tx"><div class="ico">${x.type==='entrada'?'💰':'🧾'}</div><div class="info"><b>${x.category}</b><small>${new Date(x.date+'T12:00:00').toLocaleDateString('pt-BR')}${x.desc?' · '+x.desc:''}</small></div><div class="amt" style="color:${x.type==='entrada'?'#16875a':'#e74646'}">${x.type==='entrada'?'+':'-'} ${money(x.amount)}</div></div>`}
+function render(){let inc=entries.filter(x=>x.type==='entrada').reduce((a,x)=>a+x.amount,0),out=entries.filter(x=>x.type==='saida').reduce((a,x)=>a+x.amount,0);balance.textContent=money(inc-out);income.textContent=money(inc);expense.textContent=money(out);rIncome.textContent=money(inc);rExpense.textContent=money(out);
+ homeList.innerHTML=entries.slice(0,4).map(txHTML).join('')||'<div class="card">Nenhum lançamento registrado.</div>';
+ let ft=filterType?.value||'all',fc=filterCat?.value||'all';let list=entries.filter(x=>(ft==='all'||x.type===ft)&&(fc==='all'||x.category===fc));allList.innerHTML=list.map(txHTML).join('')||'<div class="card">Nenhum lançamento encontrado.</div>';
+ goals.innerHTML=goalsData();report.innerHTML=[1,2,3,4,5,6,7].map((m,i)=>`<div class="col"><div class="bars"><span class="barin" style="height:${35+i*8}px"></span><span class="barout" style="height:${25+i*6}px"></span></div><span>${m}</span></div>`).join('')
+}
+function goalsData(){return goals.map(g=>{let pct=g.target?Math.min(100,g.saved/g.target*100):0;return `<div class="goal"><div class="goalhead"><b>🎯 ${g.name}</b><b>${pct.toFixed(0)}%</b></div><div class="bar"><span style="width:${pct}%"></span></div><small>${money(g.saved)} / ${money(g.target)}</small></div>`}).join('')||'<div class="card">Nenhuma meta cadastrada.</div>'}
+function openGoal(){document.getElementById('goalModal').classList.add('show')}function closeGoal(){document.getElementById('goalModal').classList.remove('show')}
+function saveGoal(){let n=goalName.value,t=+goalTarget.value,s=+goalSaved.value||0;if(!n||!t){toast('Preencha nome e valor da meta.');return}goals.push({id:Date.now(),name:n,target:t,saved:s});localStorage.setItem('mf_goals',JSON.stringify(goals));closeGoal();render();toast('Meta salva.')}
+function toast(s){let e=document.getElementById('toast');e.textContent=s;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
+render();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js")}</script></body></html>
